@@ -262,6 +262,7 @@ namespace
         if (i == 49) cout << "Match nul"  << endl;
         else if (CoupDuJoueur1) cout << "victoire de " << NJoueur1 << endl;
         else cout << "victoire de " << NJoueur2 << endl;
+        return 0;
     } // Jeu2Joueurs ()
 
 /**************************************************************************/   
