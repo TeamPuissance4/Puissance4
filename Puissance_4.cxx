@@ -321,7 +321,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 				
 			}
 			if (Choix =='1')
-				Jeu2Joueurs();// sélection dans menu proncipal
+				Jeu2Joueurs();// sélection dans menu principal
 					
 		}
 	} //Menu () 
