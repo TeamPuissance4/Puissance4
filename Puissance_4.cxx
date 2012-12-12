@@ -2,7 +2,7 @@
  *
  * @file   Puissance_4.cxx
  *
- * @author SCOUR Kilian <-- Trololol COUCOUCOUCOU
+ * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI	
  *
  * @date   6/12/2012
  *
