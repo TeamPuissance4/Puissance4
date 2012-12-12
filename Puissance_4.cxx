@@ -225,6 +225,10 @@ namespace
 
     void JeuNormal ()
     {
+    	unsigned NbManche;
+       	cout << "Saisir le nombre de manche(s) : ";
+    	cin  >> NbManche ;
+    	cin.ignore();
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
@@ -235,14 +239,15 @@ namespace
         unsigned NumLi;
         bool CoupDuJoueur1 = true;
         unsigned i;
-        
-        for (i = 0; i < 49 ; ++i)
+         unsigned CptVicJ1 (0), CptVicJ2 (0); 
+        for (i = 0; i < (NbManche * 49)*2 ; ++i)
         {   
             
             for (;;)
             {
                 for (;;)
                 {
+                	
                     cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
                     string Buffer;
                     getline (cin, Buffer);
@@ -257,11 +262,25 @@ namespace
             }
             ClearScreen();
             AffichePuissance4 (Mat);
-           if (Victoire (Mat, NumLi,NumCol, CoupDuJoueur1)) break;
+        	if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
+        	{
+        			if (CoupDuJoueur1)
+        				CptVicJ1 += 1;
+        			else 
+        				CptVicJ2 += 1;
+        			InitMat(Mat);
+        			ClearScreen();
+        			AffichePuissance4 (Mat);
+        			
+          	}
+        	cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;           
             CoupDuJoueur1 = !CoupDuJoueur1;
+
+             if (NbManche == CptVicJ1) break;
+            
         }
-        if (i == 49) cout << "Match nul"  << endl;
-        else if (CoupDuJoueur1) cout << "victoire de " << NJoueur1 << endl;
+        if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
+        else if (NbManche == CptVicJ1) cout << "victoire de " << NJoueur1 << endl;
         else cout << "victoire de " << NJoueur2 << endl;
         cout << "Appuyez sur une entrée pour continuer...";
         cin.get();
