@@ -265,7 +265,11 @@ namespace
         return 0;
     } // Jeu2Joueurs ()
     
-    int JeuArcade () /* A TERMINER */
+ int JeuArcade () /* A TERMINER */
+    /* Chaque joueur commence avec 50 jetons.
+     * 
+     * 
+    */
     {
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
@@ -277,13 +281,17 @@ namespace
         bool CoupDuJoueur1 = true;
         unsigned i;
         
-        for (i = 0; i < 49 ; ++i)
+        for (i = 100; i > 0 ; -i)
         {   
+			int ScoreJoueur1;
+			int ScoreJoueur2;
             
             for (;;)
             {
+				// Placement du jeton
                 for (;;)
                 {
+					
                     cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
                     string Buffer;
                     getline (cin, Buffer);
