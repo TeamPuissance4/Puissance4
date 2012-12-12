@@ -25,7 +25,7 @@ namespace
     typedef vector <char> CVLigne;
     typedef vector <CVLigne> CVMatrice;
     
-/*******************VARIABLES PAR DEFAUT ******************/
+/*******************VARIABLES PAR DEFAUT ******************Trololololo/
 
  const string KReset   ("0");
     const string KNoir    ("30");
