@@ -2,7 +2,7 @@
  *
  * @file   Puissance_4.cxx
  *
- * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI	
+ * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI
  *
  * @date   6/12/2012
  *
@@ -298,10 +298,53 @@ namespace
         cin.get();
     } // Jeu2Joueurs ()
     
-    void EffacerColonneGagnante(CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol)
+   char EffacerColonneGagnante(CVMatrice & Mat)
     {
+		unsigned NumLi;
+		for (unsigned NumCol (0); NumCol < Mat[0].size(); ++NumCol)
+		{
+			
+			if ((Mat[Mat.size()-4][NumCol]='.')) continue; // Moins de 4 jetons dans la colonne
+			unsigned CompteurDeJetons (0);
+			char Jeton = Mat[Mat.size()-1][NumCol];
+			for (NumLi = Mat.size()-2 ; NumLi >= 0 && Mat[NumLi-1][NumCol] != '.' ; --NumLi)
+			{
+				if (Jeton == Mat[NumLi][NumCol])
+				{
+					
+					++CompteurDeJetons;
+					
+				}
+				else
+				{
+					
+					CompteurDeJetons = 0;
+					Jeton = Mat[NumLi][NumCol];
+					
+				}
+				
+				if (CompteurDeJetons >= 3) 
+				{
+					for ( unsigned i (0); i < 4; ++NumLi)
+						Mat[NumLi][NumCol] = '.';
+					
+					return Jeton;
+				}
+				
+			}
+			
+		}
 		
-		for (unsigned i = NumLi; i < NumLi + 4; ++i)
+		return '.';
+		
+		
+		
+		
+		
+		
+		
+		
+		/*for (unsigned i = NumLi; i < NumLi + 4; ++i)
 		{
 			
 			if (NumLi <= Mat.size()-4)
@@ -309,7 +352,37 @@ namespace
 			else 
 				Mat[i][NumCol] = Mat[i-4][NumCol];
 			
-		}
+		}*/
+		
+	}// EffacerColonneGagnante
+	
+    void EffacerLigneGagnante(CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol, bool CoupDuJoueur1)
+    {
+		
+		char Jeton = Mat[NumLi][NumCol];
+		
+		const unsigned KNbPoss (NumCol < Mat.size () /2  ?  NumCol +1 : Mat.size () - NumCol);
+		
+		const int KPosDeb = max (0, int(NumCol - Mat.size () /2));
+
+		for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
+		{
+			unsigned NbCorrespondances = 0;
+			unsigned Pos;
+			for (Pos = (KPosDeb + NbInspections) ; (Pos < Mat.size ()) &&  (Jeton == Mat [NumLi][Pos]) ; ++Pos)
+			    ++ NbCorrespondances;
+
+			if (4 == NbCorrespondances)
+			{
+				
+					for (unsigned i=4; i < 0; --i)
+					{
+						Mat[NumLi][Pos]='.';
+						--Pos;
+					}
+				
+			}
+		}// EffacerLigneGagnante
 		
 	}// EffacerColonneGagnante
     
@@ -337,6 +410,7 @@ namespace
         {   
 
             ClearScreen();
+            cout << EffacerColonneGagnante(Mat) << endl;
             cout << "Nombre de jetons restants : " << NombreDeJetons / 2 << endl << endl; /* la moitié chacun */ 
             AffichePuissance4 (Mat);
             for (;;)
@@ -362,8 +436,17 @@ namespace
             
            if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
-			if ((Mat[NumLi][NumCol] == Jeton1)) ScoreJoueur1++; else ScoreJoueur2++;
-			EffacerColonneGagnante(Mat, NumLi,NumCol);
+			char JetonTest ('.');
+			do
+			{
+				JetonTest = EffacerColonneGagnante(Mat);
+				if (Jeton1 == JetonTest)
+					++ScoreJoueur1;
+				else if (Jeton2 == JetonTest)
+					++ScoreJoueur2;
+			}
+			while (JetonTest != '.');
+
 		   }
 		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
