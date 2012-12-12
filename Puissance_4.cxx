@@ -286,29 +286,51 @@ namespace
         cin.get();
     } // Jeu2Joueurs ()
     
- int JeuArcade () /* A TERMINER */
-    /* Chaque joueur commence avec 50 jetons.
-     * 
-     * 
+    void EffacerColonneGagnante(CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol)
+    {
+		
+		for (unsigned i = NumLi; i < NumLi + 4; ++i)
+		{
+			
+			if (NumLi <= Mat.size()-4)
+				Mat[i][NumCol] = '.';
+			else 
+				Mat[i][NumCol] = Mat[i-4][NumCol];
+			
+		}
+		
+	}// EffacerColonneGagnante
+    
+    void JeuArcade () /* A TERMINER */
+    /* Chacun commence avec 50 jetons. Lorsque qu'un joueur remplit une
+     * ligne/colonne/diagonale, il gagne 1 point. et les jetons gagnants
+     * sont effacés (ceux du dessus les remplacent). Si la grille est
+     * saturée, la ligne du bas est effacée. Le joueur ayant le plus de 
+     * points à la fin des stocks remporte la manche.
     */
     {
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
-        AffichePuissance4 (Mat);
+        unsigned NombreDeJetons (100);
         char LettreCol;
         unsigned NumCol;
         unsigned NumLi;
         bool CoupDuJoueur1 = true;
-        unsigned i;
+
+		int ScoreJoueur1 (0);
+		int ScoreJoueur2 (0);
         
-        for (i = 100; i > 0 ; -i)
+        for (; NombreDeJetons > 0 ; --NombreDeJetons)
         {   
-			int ScoreJoueur1;
-			int ScoreJoueur2;
-            
+
+            ClearScreen();
+            cout << "Nombre de jetons restants : " << NombreDeJetons / 2 << endl << endl; /* la moitié chacun */ 
+            AffichePuissance4 (Mat);
             for (;;)
             {
+				cout << endl << NJoueur1 << " : " << ScoreJoueur1 << '\t' << NJoueur2 << " : " << ScoreJoueur2 << endl << endl;
+                    
 				// Placement du jeton
                 for (;;)
                 {
@@ -325,14 +347,23 @@ namespace
                 PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
-            AffichePuissance4 (Mat);
-           if (Victoire (Mat, NumLi,NumCol, CoupDuJoueur1)) break;
+            
+           if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
+		   {
+			if ((Mat[NumLi][NumCol] == Jeton1)) ScoreJoueur1++; else ScoreJoueur2++;
+			EffacerColonneGagnante(Mat, NumLi,NumCol);
+		   }
+		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
+		   {
+			if (CoupDuJoueur1) ScoreJoueur1++; else ScoreJoueur2++;
+		   }
+		   else if (TestVictoireDiagonale (Mat, NumLi,NumCol, CoupDuJoueur1))
+		   {
+			if (CoupDuJoueur1) ScoreJoueur1++; else ScoreJoueur2++;
+		   }
             CoupDuJoueur1 = !CoupDuJoueur1;
         }
-        if (i == 49) cout << "Match nul"  << endl;
-        else if (CoupDuJoueur1) cout << "victoire de " << NJoueur1 << endl;
-        else cout << "victoire de " << NJoueur2 << endl;
-        return 0;
+        
     } // JeuArcade ()
 
 /**************************************************************************/   
