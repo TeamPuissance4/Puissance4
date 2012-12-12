@@ -224,7 +224,7 @@ namespace
     
 /*********************************MODE DE JEU ******************************/
 
-    int JeuNormal ()
+    void JeuNormal ()
     {
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
@@ -262,7 +262,8 @@ namespace
         if (i == 49) cout << "Match nul"  << endl;
         else if (CoupDuJoueur1) cout << "victoire de " << NJoueur1 << endl;
         else cout << "victoire de " << NJoueur2 << endl;
-        return 0;
+        cout << "Appuyez sur une entrée pour continuer...";
+        cin.get();
     } // Jeu2Joueurs ()
     
  int JeuArcade () /* A TERMINER */
