@@ -308,6 +308,31 @@ namespace
 
 /**************************************************************************/   
 /************************MENU**********************************************/
+void ParametreJeu ()
+{
+	cout << setw (4)<< "1) Jeu Normal" << endl;
+	cout << setw(4) << "2) Jeu Arcade" << endl;
+	cout << setw(4) << "3) Retour au menu " << endl;
+	cout << "Que voulez-vous faire ?\n Saise : ";
+	
+	char ChoixJeu; 
+	string Buffer;
+	getline (cin, Buffer);
+	ChoixJeu = Buffer [0];
+	
+	if (ChoixJeu == '3' )
+		ClearScreen();
+	if (ChoixJeu == '2')
+	{
+		ClearScreen ();
+		JeuArcade ();		
+	}
+	if (ChoixJeu == '1')
+	{
+		ClearScreen();
+		JeuNormal ();
+    } 
+}// Menu dans Jeu
 
 void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoueur2, char & ChoixParam)
    {
@@ -373,7 +398,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 				
 			}
 			if (Choix =='1')
-				Jeu2Joueurs();// sélection dans menu principal
+				ParametreJeu ();// sélection dans menu principal
 					
 		}
 	} //Menu () 
