@@ -325,7 +325,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 				Jeu2Joueurs();// sélection dans menu proncipal
 					
 		}
-	} //Menu () en couleur
+	} //Menu () 
 
 	
 
