@@ -224,7 +224,7 @@ namespace
     
 /*********************************MODE DE JEU ******************************/
 
-    int Jeu2Joueurs ()
+    int JeuNormal ()
     {
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
