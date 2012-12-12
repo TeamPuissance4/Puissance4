@@ -264,6 +264,47 @@ namespace
         else cout << "victoire de " << NJoueur2 << endl;
         return 0;
     } // Jeu2Joueurs ()
+    
+    int JeuArcade () /* A TERMINER */
+    {
+        CVLigne Li (7, '.');
+        CVMatrice Mat (7, Li);
+        InitMat (Mat);
+        AffichePuissance4 (Mat);
+        char LettreCol;
+        unsigned NumCol;
+        unsigned NumLi;
+        bool CoupDuJoueur1 = true;
+        unsigned i;
+        
+        for (i = 0; i < 49 ; ++i)
+        {   
+            
+            for (;;)
+            {
+                for (;;)
+                {
+                    cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
+                    string Buffer;
+                    getline (cin, Buffer);
+                    LettreCol = Buffer[0];
+                    LettreCol = toupper (LettreCol);
+                    if ( LettreCol < 'A' || LettreCol > 'G') continue;
+                    NumCol = LettreCol - 'A';
+                    break;
+                }                
+                PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
+                if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
+            }
+            AffichePuissance4 (Mat);
+           if (Victoire (Mat, NumLi,NumCol, CoupDuJoueur1)) break;
+            CoupDuJoueur1 = !CoupDuJoueur1;
+        }
+        if (i == 49) cout << "Match nul"  << endl;
+        else if (CoupDuJoueur1) cout << "victoire de " << NJoueur1 << endl;
+        else cout << "victoire de " << NJoueur2 << endl;
+        return 0;
+    } // JeuArcade ()
 
 /**************************************************************************/   
 /************************MENU**********************************************/
