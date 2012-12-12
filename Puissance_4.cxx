@@ -34,8 +34,8 @@ namespace
     const string KBleu    ("34");
     const string KMagenta ("35");
     const string KCyan    ("36");
-    char Jeton1 = 'X';
-    char Jeton2 = 'O';
+   char Jeton1 = 'X';
+   char Jeton2 = 'O'; 
     string NJoueur1 = "Joueur1";
     string NJoueur2 = "Joueur2";
     char ChoixParam = '3'; 
@@ -56,8 +56,6 @@ namespace
             if (Jeton2 != Jeton1) break;
             cerr << "Choisissez un jeton différent de " << NJoueur1 << "." << endl;
         }
-        Jeton1 = 'X';
-        Jeton2 = 'O';
     } // SaisieJeton ()
     
       void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
@@ -99,11 +97,11 @@ namespace
     
     void AfficheMatrice (const CVMatrice & Mat)
     {
-        Couleur (KReset);
         for (unsigned i (0); i < Mat.size(); ++i)
         {
             AfficheLigne (Mat[i]);
         }
+        
     } // AficheMatrice ()
     
     void AffichePuissance4 (const CVMatrice & Mat)
@@ -224,6 +222,8 @@ namespace
 /*********************************MODE DE JEU ******************************/
 
     void JeuNormal ()
+    /*L'utilisateur choisit le nombre de manche(s) à gagner afin qu'un vainqueur soit prononcé, 
+    	chaque ligne/colonne/diagonale gagnante rappporte 1 point et réinitialise le jeu*/
     {
     	unsigned NbManche;
        	cout << "Saisir le nombre de manche(s) : ";
@@ -247,8 +247,18 @@ namespace
             {
                 for (;;)
                 {
-                	
-                    cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
+                	if (CoupDuJoueur1)
+                	{
+                		Couleur (KRouge);
+                    	cout << NJoueur1 << ": Choisissez la position (entre A et G) du pion à placer : ";
+                    	Couleur (KReset);
+                    }
+                    else 
+                    {
+                    	Couleur (KBleu);
+                    	cout << NJoueur1 << ": Choisissez la position (entre A et G) du pion à placer : ";
+                    	Couleur (KReset);
+                    }
                     string Buffer;
                     getline (cin, Buffer);
                     LettreCol = Buffer[0];
@@ -273,7 +283,9 @@ namespace
         			AffichePuissance4 (Mat);
         			
           	}
-        	cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;           
+          	Couleur (KCyan);
+        	cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ; 
+        	Couleur (KReset);          
             CoupDuJoueur1 = !CoupDuJoueur1;
 
              if (NbManche == CptVicJ1) break;
