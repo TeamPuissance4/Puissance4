@@ -269,10 +269,14 @@ namespace
 
 void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoueur2, char & ChoixParam)
    {
-   		cout 	<< setw (4) << "1) Nom Joueur" << endl 
-   				<< setw(4) << "2) Jeton" << endl 
-   				<< setw(4) << "3) Revenir au menu" << endl ;
-   				
+   		Couleur (KCyan);
+   		cout 	<< setw (4) << "1) Nom Joueur" << endl; 
+   		Couleur (KVert);
+   		cout	<< setw(4) << "2) Jeton" << endl;
+   		Couleur (KRouge); 
+   		cout << setw(4) << "3) Revenir au menu" << endl ;
+   		Couleur (KReset);
+   		cout << "Que voulez-vous faire ?\n Saise : ";		
    		string Buffer;
    		getline (cin, Buffer);
    		ChoixParam = Buffer[0];
@@ -307,7 +311,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			Couleur (KMagenta);
 			cout << setw (3) << "3) Quitter" << endl;
 			Couleur (KReset);
-								
+			cout << "Que voulez-vous faire ?\n Saise : ";					
 			string Buffer;
 			char Choix;
 			getline (cin, Buffer);
