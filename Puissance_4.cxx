@@ -99,7 +99,6 @@ namespace
     
     void AfficheMatrice (const CVMatrice & Mat)
     {
-        ClearScreen ();
         Couleur (KReset);
         for (unsigned i (0); i < Mat.size(); ++i)
         {
@@ -229,6 +228,7 @@ namespace
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
+        ClearScreen();
         AffichePuissance4 (Mat);
         char LettreCol;
         unsigned NumCol;
@@ -255,6 +255,7 @@ namespace
                 PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
+            ClearScreen();
             AffichePuissance4 (Mat);
            if (Victoire (Mat, NumLi,NumCol, CoupDuJoueur1)) break;
             CoupDuJoueur1 = !CoupDuJoueur1;
