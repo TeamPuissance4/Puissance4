@@ -2,7 +2,7 @@
  *
  * @file   Puissance_4.cxx
  *
- * @author SCOUR Kilian <-- Trololol
+ * @author SCOUR Kilian <-- Trololol COUCOUCOUCOU
  *
  * @date   6/12/2012
  *
