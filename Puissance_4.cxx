@@ -333,7 +333,7 @@ void ParametreJeu ()
 	if (ChoixJeu == '2')
 	{
 		ClearScreen ();
-		JeuArcade ();		
+		//JeuArcade ();		
 	}
 	if (ChoixJeu == '1')
 	{
@@ -381,7 +381,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			Couleur (KRouge);
 			cout <<endl <<  " ____        _                                _  _   "<<
 					endl << "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
-					endl << "| |_) | | | | / __/ __|/ _` | '_ \\ / __/ _ \\ | || |_ "<<
+					endl << "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\ | || |_ "<<
 					endl << "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
 					endl << "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
 					  endl<< endl ;
