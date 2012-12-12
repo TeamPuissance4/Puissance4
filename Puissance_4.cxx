@@ -303,8 +303,14 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 	{
 		for (;;)
 		{
+			ClearScreen();
 			Couleur (KRouge);
-			cout <<endl <<  "PUISSANCE 4 " <<endl << endl ;
+			cout <<endl <<  " ____        _                                _  _   "<<
+					endl << "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
+					endl << "| |_) | | | | / __/ __|/ _` | '_ \\ / __/ _ \\ | || |_ "<<
+					endl << "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
+					endl << "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
+					  endl<< endl ;
 			Couleur (KJaune);
 			cout << setw (3) << "1) Jouer" << endl ;
 			Couleur (KCyan);
