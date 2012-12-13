@@ -1,3 +1,4 @@
+
 /**
  *
  * @file   Puissance_4.cxx
@@ -14,6 +15,7 @@
 #include <iomanip>
 #include <vector>
 #include <string>
+#include <fstream>
 
 
 using namespace std;
@@ -26,20 +28,21 @@ namespace
     typedef vector <CVLigne> CVMatrice;
     
 /*******************VARIABLES PAR DEFAUT ******************/
- const string KReset   ("0");
- const string KNoir    ("30");
- const string KRouge   ("31");
- const string KVert    ("32");
- const string KJaune   ("33");
- const string KBleu    ("34");
- const string KMagenta ("35");
- const string KCyan    ("36");
- char Jeton1 = 'X';
- char Jeton2 = 'O'; 
- string NJoueur1 = "Joueur1";
- string NJoueur2 = "Joueur2";
- char ChoixParam = '3'; 
- string Cheat1 ("Casali"), Cheat2 ("Laporte");
+const string KReset   ("0");
+const string KNoir    ("30");
+const string KRouge   ("31");
+const string KVert    ("32");
+const string KJaune   ("33");
+const string KBleu    ("34");
+const string KMagenta ("35");
+const string KCyan    ("36");
+char Jeton1 = 'X';
+char Jeton2 = 'O';
+string NJoueur1 = "Joueur1";
+string NJoueur2 = "Joueur2";
+char ChoixParam = '3';
+string Cheat1 ("Casali"), Cheat2 ("Laporte");
+string FichierHistorique;
  /**************************PARAMETRES JOUEURS *********************/
    void Couleur (const string & coul)
     {
@@ -250,7 +253,7 @@ namespace
     }// Victoire ()
     
 /**************************************************************************/
-    
+
 /*********************************MODE DE JEU ******************************/
 
     void JeuNormal ()
@@ -324,9 +327,24 @@ namespace
              if (NbManche == CptVicJ1) break;
             
         }
+        cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
+        cin >> FichierHistorique;
+        ofstream os (FichierHistorique.c_str ());
         if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
-        else if (NbManche == CptVicJ1) cout << "victoire de " << NJoueur1 << endl;
-        else cout << "victoire de " << NJoueur2 << endl;
+        else if (NbManche == CptVicJ1)
+        {
+            
+            cout << "victoire de " << NJoueur1 << endl;
+            os << NJoueur1 << " a gagné contre " << NJoueur2;
+            
+
+        }
+        else
+        {
+            cout << "victoire de " << NJoueur2 << endl;
+            os << NJoueur2 << " a gagné contre " << NJoueur1;
+        }
+        
         cout << "Appuyez sur une entrée pour retourner dans le menu...";
         cin.get();
     } // Jeu2Joueurs ()
@@ -535,15 +553,27 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			cout << setw (3) << "1) Jouer" << endl ;
 			Couleur (KCyan);
 			cout << setw (3) << "2) Préfèrences" << endl ;
+            cout << setw (3) << "3) Historique" << endl; 
 			Couleur (KMagenta);
-			cout << setw (3) << "3) Quitter" << endl;
+			cout << setw (3) << "4) Quitter" << endl;
 			Couleur (KReset);
 			cout << "Que voulez-vous faire ?\n Saise : ";					
 			string Buffer;
 			char Choix;
 			getline (cin, Buffer);
 			Choix=Buffer [0];
-			if (Choix == '3') break;
+			if (Choix == '4') break;
+            
+            if (Choix == '3')
+            {
+               /* ifstream is (FichierHistorique.c_str);
+                string Str;
+                for (getline (is, Str); ! is.eof(); getline (is, Str))
+                     cout << Str;//Historique ()*/
+                //BUG !!!!!
+    
+            }
+            
 			if (Choix == '2')
 			{
 				ClearScreen();
