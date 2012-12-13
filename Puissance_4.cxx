@@ -377,9 +377,9 @@ string FichierHistorique;
 				{
 
 					if (Jeton1 == Mat[NumLi][NumCol])
-							{++ScoreJoueur1; ColonneEffacee = true;}
+							{ScoreJoueur1 += JetonsSupp; ColonneEffacee = true;}
 					else if (Jeton2 == Mat[NumLi][NumCol])
-							{++ScoreJoueur2; ColonneEffacee = true;}
+							{ScoreJoueur2 += JetonsSupp; ColonneEffacee = true;}
 
 					for (int i (NumLi); i >= 0; --i)
 						{
@@ -439,10 +439,10 @@ string FichierHistorique;
 				if (JetonsSupp > 0 && 0 == Compteur)
 				{
                     
-					if (Jeton1 == Mat[NumLi][NumCol])
-							{++ScoreJoueur1; LigneEffacee = true;}
-					else if (Jeton2 == Mat[NumLi][NumCol])
-							{++ScoreJoueur2; LigneEffacee = true;}
+					if (Jeton1 == Mat[NumLi][NumCol-1])
+							{ScoreJoueur1 += JetonsSupp; LigneEffacee = true;}
+					else if (Jeton2 == Mat[NumLi][NumCol-1])
+							{ScoreJoueur2 += JetonsSupp; LigneEffacee = true;}
                             
                             // Suppression de la ligne gagnante
                             cout << "JetonsSupp = " << JetonsSupp << endl;
