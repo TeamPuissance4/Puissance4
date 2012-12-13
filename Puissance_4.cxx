@@ -351,19 +351,29 @@ string FichierHistorique;
 
 			char Jeton = Mat[0][NumCol];
 			unsigned Compteur (0);
+			unsigned JetonsSupp (0);
 			for (unsigned NumLi (1); NumLi < Mat.size(); ++NumLi)
 			{
-				if ((Mat[NumLi][NumCol] == Mat[NumLi-1][NumCol]))
+                    
+                if ((Mat[NumLi][NumCol] == Mat[NumLi-1][NumCol]))
 					++Compteur;
 				else
 				{
-
 					Compteur = 0;
 					Jeton = Mat[NumLi][NumCol];
 
 				}
-
-				if (Compteur >= 3)
+				if (Compteur >= 3 && Mat[NumLi][NumCol] != '.')
+				{
+					
+					++JetonsSupp;
+					
+				}
+                
+                if (NumLi >= Mat.size()-1)
+                    Compteur = 0;
+                    
+				if (JetonsSupp > 0 && 0 == Compteur)
 				{
 
 					if (Jeton1 == Mat[NumLi][NumCol])
@@ -371,28 +381,111 @@ string FichierHistorique;
 					else if (Jeton2 == Mat[NumLi][NumCol])
 							{++ScoreJoueur2; ColonneEffacee = true;}
 
-					for (unsigned i (NumLi); i > NumLi-4; --i)
+					for (int i (NumLi); i >= 0; --i)
 						{
-							if (i < 4)
+							if (i < int((3 + JetonsSupp)))
 							{
 								Mat[i][NumCol] = '.';
 								continue;
 							} 
-							Mat[i][NumCol] = Mat[i-4][NumCol];
+							Mat[i][NumCol] = Mat[i-(3 + JetonsSupp)][NumCol];
 
 						}
 				}
 
 
-				}
-
 			}
+		
+				
+				
+
+		}
 			
-			return ColonneEffacee;
+		return ColonneEffacee;
 
 
 	}// EffacerColonneGagnante
 
+	bool EffacerLigneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
+    {
+		bool LigneEffacee (false);
+		for (unsigned NumLi (0); NumLi < Mat.size(); ++NumLi)
+		{
+
+			char Jeton = Mat[NumLi][0];
+			unsigned Compteur (0);
+			unsigned JetonsSupp (0);
+			for (unsigned NumCol (1); NumCol < Mat[0].size(); ++NumCol)
+			{
+                    
+                if ((Mat[NumLi][NumCol] == Mat[NumLi][NumCol-1]))
+					++Compteur;
+				else
+				{
+					Compteur = 0;
+					Jeton = Mat[NumLi][NumCol];
+
+				}
+				if (Compteur >= 3 && Mat[NumLi][NumCol] != '.')
+				{
+					
+					++JetonsSupp;
+					
+				}
+                
+                if (NumCol >= Mat[0].size()-1)
+                    Compteur = 0;
+                    
+				if (JetonsSupp > 0 && 0 == Compteur)
+				{
+                    
+					if (Jeton1 == Mat[NumLi][NumCol])
+							{++ScoreJoueur1; LigneEffacee = true;}
+					else if (Jeton2 == Mat[NumLi][NumCol])
+							{++ScoreJoueur2; LigneEffacee = true;}
+                            
+                            // Suppression de la ligne gagnante
+                            cout << "JetonsSupp = " << JetonsSupp << endl;
+
+					for (int i (NumCol-1); i >= int((NumCol - 1 - (3 + JetonsSupp))); --i)
+						{
+                            cout << "Grande boucle" << endl;
+							if (0 == NumLi)
+							{
+								Mat[NumLi][i] = '.';
+								continue;
+							} 
+							Mat[NumLi][i] = Mat[NumLi-1][i];
+                            
+                            // Les jetons du dessus comblent le vide
+                            
+                            for (int j (NumLi); j >= 0; --j)
+                            {
+                                if (0 == j)
+                                {
+                                    cout << "Haut de la matrice" << endl;
+                                    Mat[j][i] = '.';
+                                    continue;
+                                }
+                                cout << "Jeton tombe d'un cran" << endl; 
+                                Mat[j][i] = Mat[j-1][i];
+
+                            }
+                        }
+                        JetonsSupp = 0;
+				}
+
+
+			}
+		
+				
+				
+
+		}
+		
+		
+		return LigneEffacee;
+	}// EffacerLigneGagnante
     
     void JeuArcade () /* A TERMINER */
     /* Chacun commence avec 50 jetons. Lorsque qu'un joueur remplit une
@@ -419,24 +512,36 @@ string FichierHistorique;
 
             ClearScreen();
             cout << "Nombre de jetons restants : " << NombreDeJetons / 2 << endl << endl; /* la moitié chacun */ 
+            cout << NJoueur1 << " : " << ScoreJoueur1 << '\t' << NJoueur2 << " : " << ScoreJoueur2 << endl << endl;
             AffichePuissance4 (Mat);
             for (;;)
             {
-				cout << endl << NJoueur1 << " : " << ScoreJoueur1 << '\t' << NJoueur2 << " : " << ScoreJoueur2 << endl << endl;
+				
                     
 				// Placement du jeton
                 for (;;)
-                {
-
-                    cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
-                    string Buffer;
-                    getline (cin, Buffer);
-                    LettreCol = Buffer[0];
-                    LettreCol = toupper (LettreCol);
-                    if ( LettreCol < 'A' || LettreCol > 'G') continue;
-                    NumCol = LettreCol - 'A';
-                    break;
-                }                
+	                {
+	                	if (CoupDuJoueur1)
+	                	{
+	                		Couleur (KRouge);
+	                    	cout << NJoueur1 ;
+	                    	Couleur (KReset);
+	                    }
+	                    else 
+	                    {
+	                    	Couleur (KBleu);
+	                    	cout << NJoueur2;
+	                    	Couleur (KReset);
+	                    }
+	                    cout  << ": Choisissez la position (entre A et G) du pion à placer : ";
+	                    string Buffer;
+	                    getline (cin, Buffer);
+	                    LettreCol = Buffer[0];
+	                    LettreCol = toupper (LettreCol);
+	                    if ( LettreCol < 'A' || LettreCol > 'G') continue;
+	                    NumCol = LettreCol - 'A';
+	                    break;
+	                }                
                 PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
@@ -448,8 +553,8 @@ string FichierHistorique;
 
 					Victoire = false;
 
-					Victoire = EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
-					//Victoire += EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+					Victoire += EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+					Victoire += EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 					//Victoire += EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 				}	
 			}
