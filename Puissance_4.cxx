@@ -335,93 +335,54 @@ namespace
     
     
     
-   char EffacerColonneGagnante(CVMatrice & Mat)
+    void EffacerColonneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
     {
-		unsigned NumLi;
+		
 		for (unsigned NumCol (0); NumCol < Mat[0].size(); ++NumCol)
 		{
 			
-			if ((Mat[Mat.size()-4][NumCol]='.')) continue; // Moins de 4 jetons dans la colonne
-			unsigned CompteurDeJetons (0);
-			char Jeton = Mat[Mat.size()-1][NumCol];
-			for (NumLi = Mat.size()-2 ; NumLi >= 0 && Mat[NumLi-1][NumCol] != '.' ; --NumLi)
+			char Jeton = Mat[0][NumCol];
+			unsigned Compteur (0);
+			for (unsigned NumLi (1); NumLi < Mat.size(); ++NumLi)
 			{
-				if (Jeton == Mat[NumLi][NumCol])
-				{
-					
-					++CompteurDeJetons;
-					
-				}
+				if ((Mat[NumLi][NumCol] == Mat[NumLi-1][NumCol]))
+					++Compteur;
 				else
 				{
 					
-					CompteurDeJetons = 0;
+					Compteur = 0;
 					Jeton = Mat[NumLi][NumCol];
 					
 				}
 				
-				if (CompteurDeJetons >= 3) 
+				if (Compteur >= 3)
 				{
-					for ( unsigned i (0); i < 4; ++NumLi)
-						Mat[NumLi][NumCol] = '.';
 					
-					return Jeton;
+					if (Jeton1 == Mat[NumLi][NumCol])
+							++ScoreJoueur1;
+					else if (Jeton2 == Mat[NumLi][NumCol])
+							++ScoreJoueur2;
+							
+					for (unsigned i (NumLi); i > NumLi-4; --i)
+						{
+							if (i < 4)
+							{
+								Mat[i][NumCol] = '.';
+								continue;
+							} 
+							Mat[i][NumCol] = Mat[i-4][NumCol];
+						
+						}
+					}
+					
+					
 				}
 				
 			}
 			
-		}
-		
-		return '.';
-		
-		
-		
-		
-		
-		
-		
-		
-		/*for (unsigned i = NumLi; i < NumLi + 4; ++i)
-		{
-			
-			if (NumLi <= Mat.size()-4)
-				Mat[i][NumCol] = '.';
-			else 
-				Mat[i][NumCol] = Mat[i-4][NumCol];
-			
-		}*/
-		
-	}// EffacerColonneGagnante
-	
-    void EffacerLigneGagnante(CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol, bool CoupDuJoueur1)
-    {
-		
-		char Jeton = Mat[NumLi][NumCol];
-		
-		const unsigned KNbPoss (NumCol < Mat.size () /2  ?  NumCol +1 : Mat.size () - NumCol);
-		
-		const int KPosDeb = max (0, int(NumCol - Mat.size () /2));
 
-		for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
-		{
-			unsigned NbCorrespondances = 0;
-			unsigned Pos;
-			for (Pos = (KPosDeb + NbInspections) ; (Pos < Mat.size ()) &&  (Jeton == Mat [NumLi][Pos]) ; ++Pos)
-			    ++ NbCorrespondances;
-
-			if (4 == NbCorrespondances)
-			{
-				
-					for (unsigned i=4; i < 0; --i)
-					{
-						Mat[NumLi][Pos]='.';
-						--Pos;
-					}
-				
-			}
-		}// EffacerLigneGagnante
-		
 	}// EffacerColonneGagnante
+		
     
     void JeuArcade () /* A TERMINER */
     /* Chacun commence avec 50 jetons. Lorsque qu'un joueur remplit une
@@ -440,14 +401,13 @@ namespace
         unsigned NumLi;
         bool CoupDuJoueur1 = true;
 
-		int ScoreJoueur1 (0);
-		int ScoreJoueur2 (0);
+		unsigned ScoreJoueur1 (0);
+		unsigned ScoreJoueur2 (0);
         
         for (; NombreDeJetons > 0 ; --NombreDeJetons)
         {   
 
             ClearScreen();
-            cout << EffacerColonneGagnante(Mat) << endl;
             cout << "Nombre de jetons restants : " << NombreDeJetons / 2 << endl << endl; /* la moitié chacun */ 
             AffichePuissance4 (Mat);
             for (;;)
@@ -473,18 +433,10 @@ namespace
             
            if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
-			char JetonTest ('.');
-			do
-			{
-				JetonTest = EffacerColonneGagnante(Mat);
-				if (Jeton1 == JetonTest)
-					++ScoreJoueur1;
-				else if (Jeton2 == JetonTest)
-					++ScoreJoueur2;
-			}
-			while (JetonTest != '.');
+			EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+		}
 
-		   }
+		   
 		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
 			if (CoupDuJoueur1) ScoreJoueur1++; else ScoreJoueur2++;
