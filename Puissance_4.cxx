@@ -446,8 +446,10 @@ string FichierHistorique;
                             
                             // Suppression de la ligne gagnante
                             cout << "JetonsSupp = " << JetonsSupp << endl;
-
-					for (int i (NumCol-1); i >= int((NumCol - 1 - (3 + JetonsSupp))); --i)
+                            
+/*bug à la con*/    if (NumCol == Mat[0].size()-1)
+                        ++NumCol;
+					for (int i (NumCol-1); i > int((NumCol - 1 - (3 + JetonsSupp))); --i)
 						{
                             cout << "Grande boucle" << endl;
 							if (0 == NumLi)
