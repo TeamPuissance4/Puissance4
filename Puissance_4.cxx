@@ -431,21 +431,27 @@ namespace
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
             
-           if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
-		   {
+           for (bool ColonneEffacee (true); ColonneEffacee (true); )
+           {
+			   ColonneEffacee = false;
+			   
+			if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
+			{
 			EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
-		}
+			}
 
 		   
 		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
-			if (CoupDuJoueur1) ScoreJoueur1++; else ScoreJoueur2++;
+			//EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 		   }
 		   else if (TestVictoireDiagonale (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
-			if (CoupDuJoueur1) ScoreJoueur1++; else ScoreJoueur2++;
+			//EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 		   }
-            CoupDuJoueur1 = !CoupDuJoueur1;
+           
+		}
+		 CoupDuJoueur1 = !CoupDuJoueur1;
         }
         
     } // JeuArcade ()
