@@ -342,8 +342,9 @@ string FichierHistorique;
     
     
     
-    void EffacerColonneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
+    bool EffacerColonneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
     {
+		bool ColonneEffacee (false);
 
 		for (unsigned NumCol (0); NumCol < Mat[0].size(); ++NumCol)
 		{
@@ -366,9 +367,9 @@ string FichierHistorique;
 				{
 
 					if (Jeton1 == Mat[NumLi][NumCol])
-							++ScoreJoueur1;
+							{++ScoreJoueur1; ColonneEffacee = true;}
 					else if (Jeton2 == Mat[NumLi][NumCol])
-							++ScoreJoueur2;
+							{++ScoreJoueur2; ColonneEffacee = true;}
 
 					for (unsigned i (NumLi); i > NumLi-4; --i)
 						{
@@ -380,12 +381,14 @@ string FichierHistorique;
 							Mat[i][NumCol] = Mat[i-4][NumCol];
 
 						}
-					}
+				}
 
 
 				}
 
 			}
+			
+			return ColonneEffacee;
 
 
 	}// EffacerColonneGagnante
@@ -437,28 +440,22 @@ string FichierHistorique;
                 PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
-            
-           for (bool ColonneEffacee (true); (ColonneEffacee = true); )
-           {
-			   ColonneEffacee = false;
+            if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1) || TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1) || TestVictoireDiagonale (Mat, NumLi,NumCol, CoupDuJoueur1))
+            {
 
-			if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
-			{
-			EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+				for ( bool Victoire(true); Victoire; )
+				{
+
+					Victoire = false;
+
+					Victoire = EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+					//Victoire += EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+					//Victoire += EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+				}	
 			}
-
-
-		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
-		   {
-			//EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
-		   }
-		   else if (TestVictoireDiagonale (Mat, NumLi,NumCol, CoupDuJoueur1))
-		   {
-			//EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
-		   }
-           
-		}
+			
 		 CoupDuJoueur1 = !CoupDuJoueur1;
+		 
         }
         
     } // JeuArcade ()
