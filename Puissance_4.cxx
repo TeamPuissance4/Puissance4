@@ -2,7 +2,7 @@
  *
  * @file   Puissance_4.cxx
  *
- * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI
+ * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI	
  *
  * @date   6/12/2012
  *
@@ -27,29 +27,44 @@ namespace
     
 /*******************VARIABLES PAR DEFAUT ******************/
  const string KReset   ("0");
-    const string KNoir    ("30");
-    const string KRouge   ("31");
-    const string KVert    ("32");
-    const string KJaune   ("33");
-    const string KBleu    ("34");
-    const string KMagenta ("35");
-    const string KCyan    ("36");
-   char Jeton1 = 'X';
-   char Jeton2 = 'O'; 
-    string NJoueur1 = "Joueur1";
-    string NJoueur2 = "Joueur2";
-    char ChoixParam = '3'; 
+ const string KNoir    ("30");
+ const string KRouge   ("31");
+ const string KVert    ("32");
+ const string KJaune   ("33");
+ const string KBleu    ("34");
+ const string KMagenta ("35");
+ const string KCyan    ("36");
+ char Jeton1 = 'X';
+ char Jeton2 = 'O'; 
+ string NJoueur1 = "Joueur1";
+ string NJoueur2 = "Joueur2";
+ char ChoixParam = '3'; 
+ string Cheat1 ("Casali"), Cheat2 ("Laporte");
  /**************************PARAMETRES JOUEURS *********************/
+   void Couleur (const string & coul)
+    {
+        cout << "\033[" << coul.c_str () <<"m";
+    }// Couleur ()
+    	
+
     void SaisieJeton (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoueur2)
     {
-        cout << "Saisissez le jeton de " << NJoueur1 << " (Caractère éditable) :";
+        cout << "Saisissez le jeton de ";
+        Couleur (KRouge); 
+        cout << NJoueur1;
+        Couleur (KReset);
+        cout << " (Caractère éditable) :";
         string Buffer;
         getline(cin, Buffer);
         Jeton1 = Buffer[0];
         cout << endl;
         for (;;)
         {
-            cout << "Saisissez le jeton de " << NJoueur2 << " (Caractère éditable) : ";
+            cout << "Saisissez le jeton de ";
+            Couleur (KBleu);
+            cout << NJoueur2;
+            Couleur (KReset);
+            cout << " (Caractère éditable) : ";
             string Buffer;
             getline(cin, Buffer);
             Jeton2 = Buffer[0];
@@ -60,24 +75,31 @@ namespace
     
       void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
     {
+    		Couleur (KRouge);
             cout << "Nom du joueur 1 : "; 
+            Couleur (KReset);
             getline(cin, NJoueur1);
+            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
+            {
+            	cout << "Correcteur Spotted" << endl;
+			}
             for (;;)
             {
+            	Couleur (KBleu);
                 cout << "Nom du joueur 2 : ";
+                Couleur (KReset);
                 getline(cin, NJoueur2);
+                if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
+                {
+            		cout << "Correcteur Spotted" << endl;
+               	}
                 if (NJoueur2 != NJoueur1) break;
                 cerr << "Choisissez un pseudo différent de " << NJoueur1 << "!" << endl;
             }
             
     }// SaisirNJoueur   
     
-        void Couleur (const string & coul)
-    {
-        cout << "\033[" << coul.c_str () <<"m";
-    }// Couleur ()
-    
- /***********************************************************************    
+       /***********************************************************************    
     
     ***************************AFFICHAGE DE LA MATRICE*********************/    
 	
@@ -106,11 +128,14 @@ namespace
     
     void AffichePuissance4 (const CVMatrice & Mat)
     {
+    	
         AfficheMatrice (Mat);
-        CVLigne Tirets (21, '-');
+        CVLigne Tirets (23, '-');
         for (unsigned i (0); i < Tirets.size(); ++i)
         {
+        	Couleur (KMagenta);
             cout << Tirets[i];
+            Couleur (KReset);
         }
         cout << endl;
         char alpha[] = "ABCDEFG";
@@ -135,13 +160,14 @@ namespace
     void PositionneJeton (CVMatrice & Mat, const unsigned NumCol, unsigned & NumLi, const bool CoupDuJoueur1)
     {
         char Pion (CoupDuJoueur1 ? Jeton1 : Jeton2);
+        
         for (NumLi = 6; NumLi != 0; --NumLi)
         {
             if (Mat[NumLi][NumCol] == '.') break;
         }
         if (NumLi >= 0 && Mat[NumLi][NumCol] == '.')
         {
-            Mat[NumLi][NumCol] = Pion;
+            Mat[NumLi][NumCol] = Pion;  
         }
     } // PositionneJeton ()
     
@@ -191,7 +217,10 @@ namespace
         for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 		{
 			unsigned NbCorrespondances = 0;
-			for (unsigned PosCol (KPosDebCol1 + NbInspections), PosLi (KPosDebLi1 - NbInspections) ; (PosCol < Mat.size ()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ; ++PosCol, --PosLi)
+			for (unsigned PosCol (KPosDebCol1 + NbInspections), PosLi (KPosDebLi1 - NbInspections) ; 
+				 (PosCol < Mat.size ()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ; 
+				 ++PosCol, --PosLi)
+				 
 			    ++ NbCorrespondances;
 
 			if (4 == NbCorrespondances) return true;
@@ -200,8 +229,12 @@ namespace
 	    for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 	    {
 		    unsigned NbCorrespondances = 0;
-		    for (unsigned PosCol (KPosDebCol2 - NbInspections), PosLi (KPosDebLi2 - NbInspections) ; (PosCol < Mat.size()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ; --PosLi, --PosCol)
+		    for (unsigned PosCol (KPosDebCol2 - NbInspections), PosLi (KPosDebLi2 - NbInspections) ; 
+		    	 (PosCol < Mat.size()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ;
+		    	   --PosLi, --PosCol)
+		    	   
 		            ++ NbCorrespondances;
+		            
 
 		    if (4 == NbCorrespondances) return true;
 		}
@@ -209,12 +242,11 @@ namespace
         
         
     } // TestVictoireDiagonale ()
-    
-    bool Victoire (const CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol, const bool CoupDuJoueur1)
+        bool Victoire (const CVMatrice & Mat, const unsigned NumLi, const unsigned NumCol, const bool CoupDuJoueur1 )
     {
     		return (TestVictoireDiagonale (Mat, NumLi, NumCol, CoupDuJoueur1) ||
     		TestVictoireLigne (Mat, NumLi, NumCol, CoupDuJoueur1) ||
-    		TestVictoireColonne (Mat, NumLi, NumCol, CoupDuJoueur1)) ;
+    		TestVictoireColonne (Mat, NumLi, NumCol, CoupDuJoueur1));
     }// Victoire ()
     
 /**************************************************************************/
@@ -225,10 +257,10 @@ namespace
     /*L'utilisateur choisit le nombre de manche(s) à gagner afin qu'un vainqueur soit prononcé, 
     	chaque ligne/colonne/diagonale gagnante rappporte 1 point et réinitialise le jeu*/
     {
+    	cout << "Saisir le nombre de manche(s) : "; 
     	unsigned NbManche;
-       	cout << "Saisir le nombre de manche(s) : ";
-    	cin  >> NbManche ;
-    	cin.ignore();
+    	cin >> NbManche;
+       	cin.ignore();
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
@@ -250,15 +282,16 @@ namespace
                 	if (CoupDuJoueur1)
                 	{
                 		Couleur (KRouge);
-                    	cout << NJoueur1 << ": Choisissez la position (entre A et G) du pion à placer : ";
+                    	cout << NJoueur1 ;
                     	Couleur (KReset);
                     }
                     else 
                     {
                     	Couleur (KBleu);
-                    	cout << NJoueur1 << ": Choisissez la position (entre A et G) du pion à placer : ";
+                    	cout << NJoueur2;
                     	Couleur (KReset);
                     }
+                    cout  << ": Choisissez la position (entre A et G) du pion à placer : ";
                     string Buffer;
                     getline (cin, Buffer);
                     LettreCol = Buffer[0];
@@ -294,9 +327,13 @@ namespace
         if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
         else if (NbManche == CptVicJ1) cout << "victoire de " << NJoueur1 << endl;
         else cout << "victoire de " << NJoueur2 << endl;
-        cout << "Appuyez sur une entrée pour continuer...";
+        cout << "Appuyez sur une entrée pour retourner dans le menu...";
         cin.get();
     } // Jeu2Joueurs ()
+    
+    
+    
+    
     
    char EffacerColonneGagnante(CVMatrice & Mat)
     {
@@ -465,9 +502,13 @@ namespace
 /************************MENU**********************************************/
 void ParametreJeu ()
 {
+	Couleur (KRouge);
 	cout << setw (4)<< "1) Jeu Normal" << endl;
+	Couleur (KVert);
 	cout << setw(4) << "2) Jeu Arcade" << endl;
+	Couleur (KJaune);
 	cout << setw(4) << "3) Retour au menu " << endl;
+	Couleur (KReset);
 	cout << "Que voulez-vous faire ?\n Saise : ";
 	
 	char ChoixJeu; 
@@ -526,11 +567,11 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 		{
 			ClearScreen();
 			Couleur (KRouge);
-			cout <<endl <<  " ____        _                                _  _   "<<
-					endl << "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
-					endl << "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\ | || |_ "<<
-					endl << "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
-					endl << "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
+			cout <<endl << setw (12)<<  " ____        _                                _  _   "<<
+					endl << setw (12)<< "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
+					endl << setw (12)<< "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\ | || |_ "<<
+					endl << setw (12)<< "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
+					endl << setw (12)<< "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
 					  endl<< endl ;
 			Couleur (KJaune);
 			cout << setw (3) << "1) Jouer" << endl ;
@@ -553,8 +594,13 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 				
 			}
 			if (Choix =='1')
+			{
+				ClearScreen ();
 				ParametreJeu ();// sélection dans menu principal
-					
+
+			}
+			
+									
 		}
 	} //Menu () 
 
