@@ -102,7 +102,7 @@ namespace
        /***********************************************************************    
     
     ***************************AFFICHAGE DE LA MATRICE*********************/    
-	
+
 	void ClearScreen ()
 	{
     cout << "\033[H\033[2J";
@@ -191,7 +191,7 @@ namespace
         char Pion = (CoupDuJoueur1 ? Jeton1 : Jeton2);
 
 		const unsigned KNbPoss (NumCol < Mat.size () /2  ?  NumCol +1 : Mat.size () - NumCol);
-		
+
 		const int KPosDeb = max (0, int(NumCol - Mat.size () /2));
 
 		for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
@@ -213,28 +213,28 @@ namespace
         const int KPosDebLi1 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
         const int KPosDebCol2 = min (6, int(NumLi > Mat.size() / 2 ? NumCol + (Mat.size() - 1 - NumLi) : NumCol + Mat.size() / 2));
         const int KPosDebLi2 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
-	    
+
         for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 		{
 			unsigned NbCorrespondances = 0;
 			for (unsigned PosCol (KPosDebCol1 + NbInspections), PosLi (KPosDebLi1 - NbInspections) ; 
 				 (PosCol < Mat.size ()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ; 
 				 ++PosCol, --PosLi)
-				 
+
 			    ++ NbCorrespondances;
 
 			if (4 == NbCorrespondances) return true;
 		}
-		
+
 	    for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 	    {
 		    unsigned NbCorrespondances = 0;
 		    for (unsigned PosCol (KPosDebCol2 - NbInspections), PosLi (KPosDebLi2 - NbInspections) ; 
 		    	 (PosCol < Mat.size()) && (PosLi < Mat.size()) &&  (Pion == Mat [PosLi][PosCol]) ;
 		    	   --PosLi, --PosCol)
-		    	   
+
 		            ++ NbCorrespondances;
-		            
+
 
 		    if (4 == NbCorrespondances) return true;
 		}
@@ -337,10 +337,10 @@ namespace
     
     void EffacerColonneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
     {
-		
+
 		for (unsigned NumCol (0); NumCol < Mat[0].size(); ++NumCol)
 		{
-			
+
 			char Jeton = Mat[0][NumCol];
 			unsigned Compteur (0);
 			for (unsigned NumLi (1); NumLi < Mat.size(); ++NumLi)
@@ -349,20 +349,20 @@ namespace
 					++Compteur;
 				else
 				{
-					
+
 					Compteur = 0;
 					Jeton = Mat[NumLi][NumCol];
-					
+
 				}
-				
+
 				if (Compteur >= 3)
 				{
-					
+
 					if (Jeton1 == Mat[NumLi][NumCol])
 							++ScoreJoueur1;
 					else if (Jeton2 == Mat[NumLi][NumCol])
 							++ScoreJoueur2;
-							
+
 					for (unsigned i (NumLi); i > NumLi-4; --i)
 						{
 							if (i < 4)
@@ -371,18 +371,18 @@ namespace
 								continue;
 							} 
 							Mat[i][NumCol] = Mat[i-4][NumCol];
-						
+
 						}
 					}
-					
-					
+
+
 				}
-				
+
 			}
-			
+
 
 	}// EffacerColonneGagnante
-		
+
     
     void JeuArcade () /* A TERMINER */
     /* Chacun commence avec 50 jetons. Lorsque qu'un joueur remplit une
@@ -417,7 +417,7 @@ namespace
 				// Placement du jeton
                 for (;;)
                 {
-					
+
                     cout << (CoupDuJoueur1 ? NJoueur1 : NJoueur2) << ": Choisissez la position (entre A et G) du pion à placer : ";
                     string Buffer;
                     getline (cin, Buffer);
@@ -431,16 +431,16 @@ namespace
                 if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
             }
             
-           for (bool ColonneEffacee (true); ColonneEffacee (true); )
+           for (bool ColonneEffacee (true); (ColonneEffacee = true); )
            {
 			   ColonneEffacee = false;
-			   
+
 			if (TestVictoireColonne (Mat, NumLi,NumCol, CoupDuJoueur1))
 			{
 			EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 			}
 
-		   
+
 		   else if (TestVictoireLigne (Mat, NumLi,NumCol, CoupDuJoueur1))
 		   {
 			//EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
@@ -468,12 +468,12 @@ void ParametreJeu ()
 	cout << setw(4) << "3) Retour au menu " << endl;
 	Couleur (KReset);
 	cout << "Que voulez-vous faire ?\n Saise : ";
-	
+
 	char ChoixJeu; 
 	string Buffer;
 	getline (cin, Buffer);
 	ChoixJeu = Buffer [0];
-	
+
 	if (ChoixJeu == '3' )
 		ClearScreen();
 	if (ChoixJeu == '2')
@@ -516,7 +516,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
    			ClearScreen();
    		}
 		// Choix des paramètres que l'on veut modifier
-		
+
    	} //Menu des paramètres 
 
 	void Menu ()
@@ -548,8 +548,8 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			{
 				ClearScreen();
 				Parametres (Jeton1, Jeton2, NJoueur1,NJoueur2, ChoixParam);
-				
-				
+
+
 			}
 			if (Choix =='1')
 			{
@@ -557,12 +557,12 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 				ParametreJeu ();// sélection dans menu principal
 
 			}
-			
-									
+
+
 		}
 	} //Menu () 
 
-	
+
 
 
 /***************************************************************************/
