@@ -308,37 +308,49 @@ string FichierHistorique;
 	                if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
 	            }
 	            ClearScreen();
-	            AffichePuissance4 (Mat);
-	        	if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1)) break;
+                AffichePuissance4 (Mat);
+                if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
+                {
+        			if (CoupDuJoueur1)
+        				CptVicJ1 += 1;
+        			else
+        				CptVicJ2 += 1;
+        			InitMat(Mat);
+        			ClearScreen();
+        			AffichePuissance4 (Mat);
+        			
+                }
+                Couleur (KCyan);
+                cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;
+                Couleur (KReset);
                 CoupDuJoueur1 = !CoupDuJoueur1;
-	        }
-            if (i == 49) cout << "Match nul" << endl;
+                
+                if (NbManche == CptVicJ1) break;
+                
+            }
+            cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
+            cin >> FichierHistorique;
+            ofstream os (FichierHistorique.c_str (), ios::app);
+            if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
+            else if (NbManche == CptVicJ1)
+            {
+                
+                cout << "victoire de " << NJoueur1;
+                os << NJoueur1 << " a gagné contre " << NJoueur2 << ".\n";
+                
+                
+            }
             else
             {
-                if (CoupDuJoueur1) CptVicJ1 += 1;
-                else CptVicJ2 += 1;
+                cout << "victoire de " << NJoueur2 << endl;
+                os << NJoueur2 << " a gagné contre " << NJoueur1<<  ".\n";
             }
-          	Couleur (KCyan);
-        	cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ; 
-        	Couleur (KReset);
-            if (NbManche == CptVicJ1 || NbManche == CptVicJ2) break;
+            
+            cout << "Appuyez sur une entrée pour retourner dans le menu...";
+            cin.get();
+            break;
         }
-        cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
-        cin >> FichierHistorique;
-        ofstream os (FichierHistorique.c_str ());
-        if (NbManche == CptVicJ1)
-        {
-            cout << "Victoire de " << NJoueur1 << endl;
-            os << NJoueur1 << " a gagné contre " << NJoueur2;
-        }
-	    else
-        {
-            cout << "Victoire de " << NJoueur2 << endl;
-            os << NJoueur2 << " a gagné contre " << NJoueur1;
-        }
-        cout << "Appuyez sur une entrée pour retourner dans le menu...";
-        cin.get();
-    } // Jeu2Joueurs ()
+    } // JeuNormal ()
     
     
     
