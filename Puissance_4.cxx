@@ -322,7 +322,6 @@ string FichierHistorique;
         				cout << "Victoire de " << NJoueur2 << endl;
         			}
         			InitMat(Mat);
-        			AffichePuissance4 (Mat);
         			
                 }
                 Couleur (KCyan);
