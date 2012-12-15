@@ -312,11 +312,16 @@ string FichierHistorique;
                 if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
                 {
         			if (CoupDuJoueur1)
+        			{
         				CptVicJ1 += 1;
+        				cout << "Victoire de " << NJoueur1 << endl;
+        			}
         			else
+        			{
         				CptVicJ2 += 1;
+        				cout << "Victoire de " << NJoueur2 << endl;
+        			}
         			InitMat(Mat);
-        			ClearScreen();
         			AffichePuissance4 (Mat);
         			
                 }
