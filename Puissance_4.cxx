@@ -276,7 +276,7 @@ string FichierHistorique;
         unsigned CptVicJ1 (0), CptVicJ2 (0); 
         for (;;)
         {
-	        for (i = 0; i < 49 ; ++i)
+	        for (i = 0; i < 2*(NbManche * 49) ; ++i)
 	        {   
 	            
 	            for (;;)
@@ -322,17 +322,33 @@ string FichierHistorique;
         				cout << "Victoire de " << NJoueur2 << endl;
         			}
         			InitMat(Mat);
-        			
                 }
                 Couleur (KCyan);
                 cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;
                 Couleur (KReset);
                 CoupDuJoueur1 = !CoupDuJoueur1;
                 
-                if (NbManche == CptVicJ1) break;
-                
+                if (NbManche == CptVicJ1 || NbManche == CptVicJ2)
+                {
+                	if (NbManche == CptVicJ1)
+                	{
+                				Couleur (KRouge);
+                        		cout<< NJoueur1 << " remporte cette partie en " << NbManche << " manche(s). " << endl;
+                        		break;
+                        		Couleur (KReset);
+                    }
+                	else
+                	{ 
+                			Couleur (KBleu);
+                			cout<< NJoueur2 << " remporte cette partie en " << NbManche << " manche(s). "<<  endl;
+                			break;
+                			Couleur (KReset);
+                	}
+                }   
             }
+            Couleur (KJaune);
             cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
+            Couleur (KReset);
             cin >> FichierHistorique;
             ofstream os (FichierHistorique.c_str (), ios::app);
             if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
@@ -349,7 +365,6 @@ string FichierHistorique;
                 cout << "victoire de " << NJoueur2 << endl;
                 os << NJoueur2 << " a gagné contre " << NJoueur1<<  ".\n";
             }
-            
             cout << "Appuyez sur une entrée pour retourner dans le menu...";
             cin.get();
             break;
@@ -606,7 +621,7 @@ void ParametreJeu ()
 	if (ChoixJeu == '2')
 	{
 		ClearScreen ();
-		//JeuArcade ();		
+		JeuArcade ();		
 	}
 	if (ChoixJeu == '1')
 	{
@@ -662,6 +677,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			cout << setw (3) << "1) Jouer" << endl ;
 			Couleur (KCyan);
 			cout << setw (3) << "2) Préfèrences" << endl ;
+			Couleur (KVert);
             cout << setw (3) << "3) Historique" << endl; 
 			Couleur (KMagenta);
 			cout << setw (3) << "4) Quitter" << endl;
