@@ -135,7 +135,7 @@ string FichierHistorique;
         CVLigne Tirets (23, '-');
         for (unsigned i (0); i < Tirets.size(); ++i)
         {
-        	Couleur (KMagenta);
+            Couleur (KMagenta);
             cout << Tirets[i];
             Couleur (KReset);
         }
@@ -211,7 +211,7 @@ string FichierHistorique;
     {
         char Pion = (CoupDuJoueur1 ? Jeton1 : Jeton2);
         const unsigned KNbPoss (NumCol < Mat.size () /2  ?  NumCol + 1 : Mat.size () - NumCol);
-	    const int KPosDebCol1 = max (0, int(NumLi > Mat.size() / 2 ? NumCol - (Mat.size() - 1 - NumLi) : NumCol - Mat.size() / 2));
+        const int KPosDebCol1 = max (0, int(NumLi > Mat.size() / 2 ? NumCol - (Mat.size() - 1 - NumLi) : NumCol - Mat.size() / 2));
         const int KPosDebLi1 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
         const int KPosDebCol2 = min (6, int(NumLi > Mat.size() / 2 ? NumCol + (Mat.size() - 1 - NumLi) : NumCol + Mat.size() / 2));
         const int KPosDebLi2 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
@@ -351,18 +351,19 @@ string FichierHistorique;
             Couleur (KReset);
             cin >> FichierHistorique;
             ofstream os (FichierHistorique.c_str (), ios::app);
-            if (i == (NbManche *49)*2 ) cout << "Match nul"  << endl;
+            if (i == (NbManche *49)*2 )
+            {
+                cout << "Match nul"  << endl;
+                os << "Match nul entre les joueurs " << NJoueur1 << " et " << NJoueur2;
             else if (NbManche == CptVicJ1)
             {
                 
-                cout << "victoire de " << NJoueur1;
                 os << NJoueur1 << " a gagné contre " << NJoueur2 << ".\n";
                 
                 
             }
             else
             {
-                cout << "victoire de " << NJoueur2 << endl;
                 os << NJoueur2 << " a gagné contre " << NJoueur1<<  ".\n";
             }
             cout << "Appuyez sur une entrée pour retourner dans le menu...";
