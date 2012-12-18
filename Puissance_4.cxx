@@ -276,9 +276,16 @@ string FichierHistorique;
         unsigned CptVicJ1 (0), CptVicJ2 (0); 
         for (;;)
         {
-	        for (i = 0; i < 2*(NbManche * 49) ; ++i)
+	        for (i = 0; i < 50 ; ++i)
 	        {   
-	            
+	            if (i == 49)
+                {
+                    ClearScreen();
+                    cout << "Match nul" << endl;
+                    InitMat(Mat);
+                    AffichePuissance4(Mat);
+                    i = 0;
+                }
 	            for (;;)
 	            {
 	                for (;;)
@@ -309,7 +316,7 @@ string FichierHistorique;
 	            }
 	            ClearScreen();
                 AffichePuissance4 (Mat);
-                if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
+                /*if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
                 {
         			if (CoupDuJoueur1)
         			{
@@ -322,7 +329,8 @@ string FichierHistorique;
         				cout << "Victoire de " << NJoueur2 << endl;
         			}
         			InitMat(Mat);
-                }
+                }*/
+                
                 Couleur (KCyan);
                 cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;
                 Couleur (KReset);
@@ -344,17 +352,18 @@ string FichierHistorique;
                 			break;
                 			Couleur (KReset);
                 	}
-                }   
+                }
             }
             Couleur (KJaune);
             cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
             Couleur (KReset);
             cin >> FichierHistorique;
             ofstream os (FichierHistorique.c_str (), ios::app);
-            if (i == (NbManche *49)*2 )
+            if (i == 49 )
             {
                 cout << "Match nul"  << endl;
                 os << "Match nul entre les joueurs " << NJoueur1 << " et " << NJoueur2;
+            }
             else if (NbManche == CptVicJ1)
             {
                 
@@ -670,7 +679,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			Couleur (KRouge);
 			cout <<endl << setw (12)<<  " ____        _                                _  _   "<<
 					endl << setw (12)<< "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
-					endl << setw (12)<< "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\ | || |_ "<<
+					endl << setw (12)<< "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\  | || |_ "<<
 					endl << setw (12)<< "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
 					endl << setw (12)<< "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
 					  endl<< endl ;
