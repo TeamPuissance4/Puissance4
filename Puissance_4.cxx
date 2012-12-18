@@ -41,7 +41,6 @@ string NJoueur1 = "Joueur1";
 string NJoueur2 = "Joueur2";
 char ChoixParam = '3';
 string Cheat1 ("Casali"), Cheat2 ("Laporte");
-string FichierHistorique;
  /**************************PARAMETRES JOUEURS *********************/
    void Couleur (const string & coul)
     {
