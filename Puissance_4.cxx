@@ -78,7 +78,7 @@ string FichierHistorique;
       void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
     {
     		Couleur (KRouge);
-            cout << "Nom du joueur 1 : "; 
+            cout << "Nom du joueur 1 : ";
             Couleur (KReset);
             getline(cin, NJoueur1);
             if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
@@ -91,6 +91,7 @@ string FichierHistorique;
                 cout << "Nom du joueur 2 : ";
                 Couleur (KReset);
                 getline(cin, NJoueur2);
+                char str[] = NJoueur2;
                 if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
                 {
             		cout << "Correcteur Spotted" << endl;
