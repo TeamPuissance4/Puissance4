@@ -4,7 +4,7 @@
  *
  * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI	
  *
- * @date   6/12/2012
+ * @date   18/12/2012
  *
  * @brief  Puissance 4
  *
@@ -81,24 +81,28 @@ string FichierHistorique;
             cout << "Nom du joueur 1 : ";
             Couleur (KReset);
             getline(cin, NJoueur1);
-            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
-            {
-            	cout << "Correcteur Spotted" << endl;
-			}
             for (;;)
             {
             	Couleur (KBleu);
                 cout << "Nom du joueur 2 : ";
                 Couleur (KReset);
                 getline(cin, NJoueur2);
-                char str[] = NJoueur2;
-                if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
-                {
-            		cout << "Correcteur Spotted" << endl;
-               	}
+                
                 if (NJoueur2 != NJoueur1) break;
                 cerr << "Choisissez un pseudo différent de " << NJoueur1 << "!" << endl;
             }
+            cout << "Le joueur 1 est : " << NJoueur1 << " ";
+            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
+            {
+            	cout << "Correcteur Spotted" << endl;
+			}
+            cout << "Le joueur 2 est : " << NJoueur2 << " ";
+            if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
+            {
+            		cout << "Correcteur Spotted" << endl;
+            }
+            cout << "Appuyer sur entrée pour retourner dans le menu...";
+            cin.get();
             
     }// SaisirNJoueur   
     
@@ -381,7 +385,7 @@ string FichierHistorique;
             {
                 os << NJoueur2 << " a gagné contre " << NJoueur1<<  ".\n";
             }
-            cout << "Appuyez sur une entrée pour retourner dans le menu...";
+            cout << "Appuyez sur entrée pour retourner dans le menu...";
             cin.get();
             break;
         }
@@ -714,7 +718,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
                 for (getline (is, Str); ! is.eof(); getline (is, Str))
                     cout << Str << endl;
                 
-                cout << "Appuyez sur une entrée pour retourner dans le menu...";
+                cout << "Appuyez sur entrée pour retourner dans le menu...";
                 cin.get();
                 
                         
