@@ -494,16 +494,15 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 				{
                     
 					if (Jeton1 == Mat[NumLi][NumCol-1])
-							{ScoreJoueur1 += JetonsSupp; LigneEffacee = true;}
+							{ScoreJoueur1 += JetonsSupp+1; LigneEffacee = true;}
 					else if (Jeton2 == Mat[NumLi][NumCol-1])
-							{ScoreJoueur2 += JetonsSupp; LigneEffacee = true;}
+							{ScoreJoueur2 += JetonsSupp+1; LigneEffacee = true;}
                             
                             // Suppression de la ligne gagnante
                             cout << "JetonsSupp = " << JetonsSupp << endl;
-                            
-/*bug à la con*/    if (NumCol == Mat[0].size()-1)
-                        ++NumCol;
-					for (int i (NumCol-1); i > int((NumCol - 1 - (3 + JetonsSupp))); --i)
+                             
+                        
+					for (int i (NumCol); i >= int((NumCol - (3 + JetonsSupp))); --i)
 						{
                             cout << "Grande boucle" << endl;
 							if (0 == NumLi)
@@ -542,6 +541,115 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 		
 		return LigneEffacee;
 	}// EffacerLigneGagnante
+	
+	bool EffacerDiagonaleGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
+	{
+		
+		bool DiagonaleEffacee (false);
+		for (unsigned NumCol (1); NumCol < Mat[0].size() - 4; ++NumCol)
+		{
+			
+			for (unsigned NumLi (1); NumLi < Mat.size(); ++NumLi)
+			{
+				
+				// Test de victoire de chaque diagonale
+				char Jeton = Mat[NumLi][0];
+				unsigned Compteur (0);
+				unsigned JetonsSupp (0);
+				unsigned j = NumCol;
+				unsigned i = NumLi;
+				
+				for (; j < Mat[0].size() && i < Mat.size(); )
+					{
+                    
+						if ((Mat[i][j] == Mat[i-1][j-1]))
+							++Compteur;
+						else
+						{
+							Compteur = 0;
+							Jeton = Mat[i][j];
+
+						}
+						if (Compteur >= 3 && Mat[i][j] != '.')
+						{	
+					
+							++JetonsSupp;
+					
+						}
+                
+						if (j >= Mat[0].size()-1 || i >= Mat.size()-1)
+							Compteur = 0;
+                    
+						if (JetonsSupp > 0 && 0 == Compteur)
+						{
+                    
+							if (Jeton1 == Mat[i-1][j-1])
+									{ScoreJoueur1 += JetonsSupp+2; DiagonaleEffacee = true;}
+							else if (Jeton2 == Mat[i-1][j-1])
+									{ScoreJoueur2 += JetonsSupp+2; DiagonaleEffacee = true;}
+                            
+							// Suppression de la diagonale gagnante
+							cout << "JetonsSupp = " << JetonsSupp << endl;
+                            
+							int NumCol = j - 1;
+							int NumLi = i - 1;
+							
+							for (; NumCol > int((j - 1 - (3 + JetonsSupp))) && NumLi > int((i - 1 - (3 + JetonsSupp))); )
+							{
+								cout << "Grande boucle" << endl;
+								if (0 == NumLi)
+								{
+									Mat[NumLi][NumCol] = '.';
+									continue;
+								}
+								
+								if (0 == NumCol)
+								{
+									
+									Mat[NumLi][NumCol] = '.';
+									continue;
+									
+								}
+								 
+								Mat[NumLi][NumCol] = Mat[NumLi-1][NumCol];
+                            
+								// Les jetons du dessus comblent le vide
+                            
+								/*for (int k (NumLi); k >= 0; --k)
+								{
+									if (0 == k)
+									{
+										cout << "Haut de la matrice" << endl;
+										Mat[k][NumCol] = '.';
+										continue;
+									}
+									cout << "Jeton tombe d'un cran" << endl; 
+									Mat[k][NumCol] = Mat[k-1][NumCol];
+
+								}*/
+								--NumCol;
+								--NumLi;
+							}
+                        
+							JetonsSupp = 0;
+						}
+
+						++i;
+						++j;
+						
+					}
+				
+				
+				
+				}
+			
+		}
+		
+		
+		return DiagonaleEffacee;
+		
+		
+	}// EffacerDiagonaleGagnante
     
     void JeuArcade () /* A TERMINER */
     /* Chacun commence avec 50 jetons. Lorsque qu'un joueur remplit une
@@ -611,7 +719,7 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 
 					Victoire += EffacerColonneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 					Victoire += EffacerLigneGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
-					//Victoire += EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
+					Victoire += EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 				}	
 			}
 			
