@@ -259,10 +259,13 @@ string FichierHistorique;
     /*L'utilisateur choisit le nombre de manche(s) à gagner afin qu'un vainqueur soit prononcé, 
     	chaque ligne/colonne/diagonale gagnante rappporte 1 point et réinitialise le jeu*/
     {
-    	cout << "Saisir le nombre de manche(s) : "; 
-    	unsigned NbManche;
-    	cin >> NbManche;
-       	cin.ignore();
+    	cout << "Saisir le nombre de partie(s) gagnante(s) nécessaire(s) (Max : 9) : "; 
+    	char NbManchechar;
+        string Buffer;
+        cin >> Buffer;
+        cin.ignore();
+    	NbManchechar = Buffer[0];
+        unsigned NbManche = NbManchechar - '0';
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
@@ -281,9 +284,9 @@ string FichierHistorique;
 	            if (i == 49)
                 {
                     ClearScreen();
-                    cout << "Match nul" << endl;
                     InitMat(Mat);
                     AffichePuissance4(Mat);
+                    cout << "Match nul" << endl;
                     i = 0;
                 }
 	            for (;;)
@@ -316,8 +319,9 @@ string FichierHistorique;
 	            }
 	            ClearScreen();
                 AffichePuissance4 (Mat);
-                /*if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
+                if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
                 {
+                    ClearScreen();
         			if (CoupDuJoueur1)
         			{
         				CptVicJ1 += 1;
@@ -329,7 +333,9 @@ string FichierHistorique;
         				cout << "Victoire de " << NJoueur2 << endl;
         			}
         			InitMat(Mat);
-                }*/
+                    AffichePuissance4(Mat);
+                    
+                }
                 
                 Couleur (KCyan);
                 cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;
@@ -355,10 +361,9 @@ string FichierHistorique;
                 }
             }
             Couleur (KJaune);
-            cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
+            cout << "Résultat stocké dans Historique.txt" << endl;
             Couleur (KReset);
-            cin >> FichierHistorique;
-            ofstream os (FichierHistorique.c_str (), ios::app);
+            ofstream os ("Historique.txt", ios::app);
             if (i == 49 )
             {
                 cout << "Match nul"  << endl;
@@ -619,7 +624,7 @@ void ParametreJeu ()
 	Couleur (KJaune);
 	cout << setw(4) << "3) Retour au menu " << endl;
 	Couleur (KReset);
-	cout << "Que voulez-vous faire ?\n Saise : ";
+	cout << "Que voulez-vous faire ?\n Saisie : ";
 
 	char ChoixJeu; 
 	string Buffer;
@@ -649,7 +654,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
    		Couleur (KRouge); 
    		cout << setw(4) << "3) Revenir au menu" << endl ;
    		Couleur (KReset);
-   		cout << "Que voulez-vous faire ?\n Saise : ";		
+   		cout << "Que voulez-vous faire ?\n Saisie : ";		
    		string Buffer;
    		getline (cin, Buffer);
    		ChoixParam = Buffer[0];
@@ -692,7 +697,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			Couleur (KMagenta);
 			cout << setw (3) << "4) Quitter" << endl;
 			Couleur (KReset);
-			cout << "Que voulez-vous faire ?\n Saise : ";					
+			cout << "Que voulez-vous faire ?\n Saisie : ";					
 			string Buffer;
 			char Choix;
 			getline (cin, Buffer);
@@ -701,11 +706,17 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
             
             if (Choix == '3')
             {
-               /* ifstream is (FichierHistorique.c_str);
+                ifstream is ("Historique.txt");
                 string Str;
+                ClearScreen ();
+                cout << "Historique des parties précédentes :" << endl;
                 for (getline (is, Str); ! is.eof(); getline (is, Str))
-                     cout << Str;//Historique ()*/
-                //BUG !!!!!
+                    cout << Str << endl;
+                
+                cout << "Appuyez sur une entrée pour retourner dans le menu...";
+                cin.get();
+                
+                        
     
             }
             
