@@ -263,13 +263,17 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
     /*L'utilisateur choisit le nombre de manche(s) à gagner afin qu'un vainqueur soit prononcé, 
     	chaque ligne/colonne/diagonale gagnante rappporte 1 point et réinitialise le jeu*/
     {
-    	cout << "Saisir le nombre de partie(s) gagnante(s) nécessaire(s) (Max : 9) : "; 
-    	char NbManchechar;
-        string Buffer;
-        cin >> Buffer;
-        cin.ignore();
-    	NbManchechar = Buffer[0];
-        unsigned NbManche = NbManchechar - '0';
+    	unsigned NbManche (13);
+    	while (NbManche > 10 || NbManche < 0)
+    	{
+	    	cout << "Saisir le nombre de partie(s) gagnante(s) nécessaire(s) (Max : 9) : "; 
+	    	char NbManchechar;
+	        string Buffer;
+	        cin >> Buffer;
+	        cin.ignore();
+	    	NbManchechar = Buffer[0];
+	        NbManche = NbManchechar - '0';
+    	}
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
