@@ -95,12 +95,12 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
             {
             	cout << "Correcteur Spotted" << endl;
 			}
-            cout << "Le joueur 2 est : " << NJoueur2 << " ";
+            cout << endl << "Le joueur 2 est : " << NJoueur2 << " ";
             if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
             {
             		cout << "Correcteur Spotted" << endl;
             }
-            cout << "Appuyer sur entrée pour retourner dans le menu...";
+            cout << endl << "Appuyer sur entrée pour retourner dans le menu...";
             cin.get();
             
     }// SaisirNJoueur   
