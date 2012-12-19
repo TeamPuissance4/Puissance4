@@ -163,7 +163,7 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
     
 
     
-    void PositionneJeton (CVMatrice & Mat, const unsigned NumCol, unsigned & NumLi, const bool CoupDuJoueur1)
+    bool PositionneJeton (CVMatrice & Mat, const unsigned NumCol, unsigned & NumLi, const bool CoupDuJoueur1)
     {
         char Pion (CoupDuJoueur1 ? Jeton1 : Jeton2);
         
@@ -173,8 +173,10 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
         }
         if (NumLi >= 0 && Mat[NumLi][NumCol] == '.')
         {
-            Mat[NumLi][NumCol] = Pion;  
+            Mat[NumLi][NumCol] = Pion;
+            return true;  
         }
+        return false;
     } // PositionneJeton ()
     
 /*********************************TEST DE VICTOIRE************************/  
@@ -322,8 +324,7 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 	                    NumCol = LettreCol - 'A';
 	                    break;
 	                }                
-	                PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
-	                if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
+	                if (PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1)) break;
 	            }
 	            ClearScreen();
                 AffichePuissance4 (Mat);
