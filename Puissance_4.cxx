@@ -420,7 +420,7 @@ void ParametreJeu ()
 	if (ChoixJeu == '2')
 	{
 		ClearScreen ();
-		JeuArcade ();		
+		//JeuArcade ();		
 	}
 	if (ChoixJeu == '1')
 	{
