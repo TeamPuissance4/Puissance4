@@ -1,14 +1,9 @@
 /**
  *
-<<<<<<< HEAD:Puissance4.old
- * @file   Puissance_4.old
  *
- * @authors Kilian SCOUR Antoine MERINO Thomas BIANCHINI Julie MIENVILLE
-=======
  * @file   Puissance_4_old.cxx
  *
  * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI Julie MIENVILLE
->>>>>>> modif dossier:Puissance_4_old.cxx
  *
  * @date   21/12/2012
  *
