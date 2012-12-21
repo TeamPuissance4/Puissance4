@@ -1,12 +1,12 @@
 /**
  *
- * @file   Puissance_4.cxx
+ * @file   Puissance_4.old
  *
- * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI  
+ * @author Kilian SCOUR Antoine MERINO Thomas BIANCHINI	Julie 
  *
- * @date   6/12/2012
+ * @date   21/12/2012
  *
- * @brief  Puissance 4
+ * @brief  Puissance 4 avec mode arcade
  *
 **/
 
@@ -41,7 +41,6 @@ string NJoueur1 = "Joueur1";
 string NJoueur2 = "Joueur2";
 char ChoixParam = '3';
 string Cheat1 ("Casali"), Cheat2 ("Laporte");
-string FichierHistorique;
  /**************************PARAMETRES JOUEURS *********************/
    void Couleur (const string & coul)
     {
@@ -78,26 +77,31 @@ string FichierHistorique;
       void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
     {
     		Couleur (KRouge);
-            cout << "Nom du joueur 1 : "; 
+            cout << "Nom du joueur 1 : ";
             Couleur (KReset);
             getline(cin, NJoueur1);
-            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
-            {
-            	cout << "Correcteur Spotted" << endl;
-			}
             for (;;)
             {
             	Couleur (KBleu);
                 cout << "Nom du joueur 2 : ";
                 Couleur (KReset);
                 getline(cin, NJoueur2);
-                if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
-                {
-            		cout << "Correcteur Spotted" << endl;
-               	}
+                
                 if (NJoueur2 != NJoueur1) break;
                 cerr << "Choisissez un pseudo différent de " << NJoueur1 << "!" << endl;
             }
+            cout << "Le joueur 1 est : " << NJoueur1 << " ";
+            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
+            {
+            	cout << "Correcteur Spotted" << endl;
+			}
+            cout << endl << "Le joueur 2 est : " << NJoueur2 << " ";
+            if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
+            {
+            		cout << "Correcteur Spotted" << endl;
+            }
+            cout << endl << "Appuyer sur entrée pour retourner dans le menu...";
+            cin.get();
             
     }// SaisirNJoueur   
     
@@ -159,7 +163,7 @@ string FichierHistorique;
     
 
     
-    void PositionneJeton (CVMatrice & Mat, const unsigned NumCol, unsigned & NumLi, const bool CoupDuJoueur1)
+    bool PositionneJeton (CVMatrice & Mat, const unsigned NumCol, unsigned & NumLi, const bool CoupDuJoueur1)
     {
         char Pion (CoupDuJoueur1 ? Jeton1 : Jeton2);
         
@@ -169,8 +173,10 @@ string FichierHistorique;
         }
         if (NumLi >= 0 && Mat[NumLi][NumCol] == '.')
         {
-            Mat[NumLi][NumCol] = Pion;  
+            Mat[NumLi][NumCol] = Pion;
+            return true;  
         }
+        return false;
     } // PositionneJeton ()
     
 /*********************************TEST DE VICTOIRE************************/  
@@ -259,10 +265,17 @@ string FichierHistorique;
     /*L'utilisateur choisit le nombre de manche(s) à gagner afin qu'un vainqueur soit prononcé, 
     	chaque ligne/colonne/diagonale gagnante rappporte 1 point et réinitialise le jeu*/
     {
-    	cout << "Saisir le nombre de manche(s) : "; 
-    	unsigned NbManche;
-    	cin >> NbManche;
-       	cin.ignore();
+    	unsigned NbManche (13);
+    	while (NbManche > 10 || NbManche < 0)
+    	{
+	    	cout << "Saisir le nombre de partie(s) gagnante(s) nécessaire(s) (Max : 9) : "; 
+	    	char NbManchechar;
+	        string Buffer;
+	        cin >> Buffer;
+	        cin.ignore();
+	    	NbManchechar = Buffer[0];
+	        NbManche = NbManchechar - '0';
+    	}
         CVLigne Li (7, '.');
         CVMatrice Mat (7, Li);
         InitMat (Mat);
@@ -281,9 +294,9 @@ string FichierHistorique;
 	            if (i == 49)
                 {
                     ClearScreen();
-                    cout << "Match nul" << endl;
                     InitMat(Mat);
                     AffichePuissance4(Mat);
+                    cout << "Match nul" << endl;
                     i = 0;
                 }
 	            for (;;)
@@ -311,13 +324,13 @@ string FichierHistorique;
 	                    NumCol = LettreCol - 'A';
 	                    break;
 	                }                
-	                PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1);
-	                if (Mat[NumLi][NumCol] == (CoupDuJoueur1 ? Jeton1 : Jeton2)) break;
+	                if (PositionneJeton (Mat, NumCol, NumLi, CoupDuJoueur1)) break;
 	            }
 	            ClearScreen();
                 AffichePuissance4 (Mat);
-                /*if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
+                if    (Victoire ( Mat, NumLi, NumCol, CoupDuJoueur1))
                 {
+                    ClearScreen();
         			if (CoupDuJoueur1)
         			{
         				CptVicJ1 += 1;
@@ -329,7 +342,9 @@ string FichierHistorique;
         				cout << "Victoire de " << NJoueur2 << endl;
         			}
         			InitMat(Mat);
-                }*/
+                    AffichePuissance4(Mat);
+                    
+                }
                 
                 Couleur (KCyan);
                 cout << setw (4) << NJoueur1 << ':' << CptVicJ1 << setw(16) << NJoueur2 << ':' << CptVicJ2 << endl << endl ;
@@ -355,10 +370,9 @@ string FichierHistorique;
                 }
             }
             Couleur (KJaune);
-            cout << "Ou voulez vous stocker votre historique ?\n Saisie du nom du fichier : ";
+            cout << "Résultat stocké dans Historique.txt" << endl;
             Couleur (KReset);
-            cin >> FichierHistorique;
-            ofstream os (FichierHistorique.c_str (), ios::app);
+            ofstream os ("Historique.txt", ios::app);
             if (i == 49 )
             {
                 cout << "Match nul"  << endl;
@@ -375,12 +389,11 @@ string FichierHistorique;
             {
                 os << NJoueur2 << " a gagné contre " << NJoueur1<<  ".\n";
             }
-            cout << "Appuyez sur une entrée pour retourner dans le menu...";
+            cout << "Appuyez sur entrée pour retourner dans le menu...";
             cin.get();
             break;
         }
     } // JeuNormal ()
-    
     
     
     bool EffacerColonneGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
@@ -406,9 +419,9 @@ string FichierHistorique;
 				}
 				if (Compteur >= 3 && Mat[NumLi][NumCol] != '.')
 				{
-					
+
 					++JetonsSupp;
-					
+
 				}
                 
                 if (NumLi >= Mat.size()-1)
@@ -436,12 +449,12 @@ string FichierHistorique;
 
 
 			}
-		
-				
-				
+
+
+
 
 		}
-			
+
 		return ColonneEffacee;
 
 
@@ -469,9 +482,9 @@ string FichierHistorique;
 				}
 				if (Compteur >= 3 && Mat[NumLi][NumCol] != '.')
 				{
-					
+
 					++JetonsSupp;
-					
+
 				}
                 
                 if (NumCol >= Mat[0].size()-1)
@@ -519,33 +532,33 @@ string FichierHistorique;
 
 
 			}
-		
-				
-				
+
+
+
 
 		}
-		
-		
+
+
 		return LigneEffacee;
 	}// EffacerLigneGagnante
-	
+
 	bool EffacerDiagonaleGagnante(CVMatrice & Mat, unsigned & ScoreJoueur1, unsigned & ScoreJoueur2, const char & Jeton1, const char &Jeton2)
 	{
-		
+
 		bool DiagonaleEffacee (false);
 		for (unsigned NumCol (1); NumCol < Mat[0].size() - 4; ++NumCol)
 		{
-			
+
 			for (unsigned NumLi (1); NumLi < Mat.size(); ++NumLi)
 			{
-				
+
 				// Test de victoire de chaque diagonale
 				char Jeton = Mat[NumLi][0];
 				unsigned Compteur (0);
 				unsigned JetonsSupp (0);
 				unsigned j = NumCol;
 				unsigned i = NumLi;
-				
+
 				for (; j < Mat[0].size() && i < Mat.size(); )
 					{
                     
@@ -559,9 +572,9 @@ string FichierHistorique;
 						}
 						if (Compteur >= 3 && Mat[i][j] != '.')
 						{	
-					
+
 							++JetonsSupp;
-					
+
 						}
                 
 						if (j >= Mat[0].size()-1 || i >= Mat.size()-1)
@@ -580,7 +593,7 @@ string FichierHistorique;
                             
 							int NumCol = j - 1;
 							int NumLi = i - 1;
-							
+
 							for (; NumCol > int((j - 1 - (3 + JetonsSupp))) && NumLi > int((i - 1 - (3 + JetonsSupp))); )
 							{
 								cout << "Grande boucle" << endl;
@@ -589,15 +602,15 @@ string FichierHistorique;
 									Mat[NumLi][NumCol] = '.';
 									continue;
 								}
-								
+
 								if (0 == NumCol)
 								{
-									
+
 									Mat[NumLi][NumCol] = '.';
 									continue;
-									
+
 								}
-								 
+
 								Mat[NumLi][NumCol] = Mat[NumLi-1][NumCol];
                             
 								// Les jetons du dessus comblent le vide
@@ -623,19 +636,19 @@ string FichierHistorique;
 
 						++i;
 						++j;
-						
+
 					}
-				
-				
-				
+
+
+
 				}
-			
+
 		}
-		
-		
+
+
 		return DiagonaleEffacee;
-		
-		
+
+
 	}// EffacerDiagonaleGagnante
     
     void JeuArcade () /* A TERMINER */
@@ -667,7 +680,7 @@ string FichierHistorique;
             AffichePuissance4 (Mat);
             for (;;)
             {
-				
+
                     
 				// Placement du jeton
                 for (;;)
@@ -709,44 +722,16 @@ string FichierHistorique;
 					Victoire += EffacerDiagonaleGagnante(Mat, ScoreJoueur1, ScoreJoueur2, Jeton1, Jeton2);
 				}	
 			}
-			
+
 		 CoupDuJoueur1 = !CoupDuJoueur1;
-		 
+
         }
         
     } // JeuArcade ()
 
 /**************************************************************************/   
 /************************MENU**********************************************/
-void ParametreJeu ()
-{
-	Couleur (KRouge);
-	cout << setw (4)<< "1) Jeu Normal" << endl;
-	Couleur (KVert);
-	cout << setw(4) << "2) Jeu Arcade" << endl;
-	Couleur (KJaune);
-	cout << setw(4) << "3) Retour au menu " << endl;
-	Couleur (KReset);
-	cout << "Que voulez-vous faire ?\n Saise : ";
 
-	char ChoixJeu; 
-	string Buffer;
-	getline (cin, Buffer);
-	ChoixJeu = Buffer [0];
-
-	if (ChoixJeu == '3' )
-		ClearScreen();
-	if (ChoixJeu == '2')
-	{
-		ClearScreen ();
-		JeuArcade ();		
-	}
-	if (ChoixJeu == '1')
-	{
-		ClearScreen();
-		JeuNormal ();
-    } 
-}// Menu dans Jeu
 
 void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoueur2, char & ChoixParam)
    {
@@ -757,7 +742,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
    		Couleur (KRouge); 
    		cout << setw(4) << "3) Revenir au menu" << endl ;
    		Couleur (KReset);
-   		cout << "Que voulez-vous faire ?\n Saise : ";		
+   		cout << "Que voulez-vous faire ?\n Saisie : ";		
    		string Buffer;
    		getline (cin, Buffer);
    		ChoixParam = Buffer[0];
@@ -786,8 +771,8 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			ClearScreen();
 			Couleur (KRouge);
 			cout <<endl << setw (12)<<  " ____        _                                _  _   "<<
-					endl << setw (12)<< "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
-					endl << setw (12)<< "| |_) | | | | / __/ __|/ _` | _ \\ / __/ _ \\  | || |_ "<<
+    				endl << setw (12)<< "|  _ \\ _   _(_)___ ___  __ _ _ __   ___ ___  | || |  "<<
+					endl << setw (12)<< "| |_) | | | | / __/ __|/ _` |  _ \\ / __/ _ \\ | || |_ "<<
 					endl << setw (12)<< "|  __/| |_| | \\__ \\__ \\ (_| | | | | (_|  __/ |__   _|"<<
 					endl << setw (12)<< "|_|    \\__,_|_|___/___/\\__,_|_| |_|\\___\\___|    |_|  "<<
 					  endl<< endl ;
@@ -800,7 +785,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			Couleur (KMagenta);
 			cout << setw (3) << "4) Quitter" << endl;
 			Couleur (KReset);
-			cout << "Que voulez-vous faire ?\n Saise : ";					
+			cout << "Que voulez-vous faire ?\n Saisie : ";					
 			string Buffer;
 			char Choix;
 			getline (cin, Buffer);
@@ -809,11 +794,17 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
             
             if (Choix == '3')
             {
-               /* ifstream is (FichierHistorique.c_str);
+                ifstream is ("Historique.txt");
                 string Str;
+                ClearScreen ();
+                cout << "Historique des parties précédentes :" << endl;
                 for (getline (is, Str); ! is.eof(); getline (is, Str))
-                     cout << Str;//Historique ()*/
-                //BUG !!!!!
+                    cout << Str << endl;
+                
+                cout << "Appuyez sur entrée pour retourner dans le menu...";
+                cin.get();
+                
+                        
     
             }
             
@@ -827,7 +818,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			if (Choix =='1')
 			{
 				ClearScreen ();
-				ParametreJeu ();// sélection dans menu principal
+				JeuNormal ();// sélection dans menu principal
 
 			}
 
