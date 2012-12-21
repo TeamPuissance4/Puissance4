@@ -400,35 +400,7 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 
 /**************************************************************************/   
 /************************MENU**********************************************/
-void ParametreJeu ()
-{
-	Couleur (KRouge);
-	cout << setw (4)<< "1) Jeu Normal" << endl;
-	Couleur (KVert);
-	cout << setw(4) << "2) Jeu Arcade" << endl;
-	Couleur (KJaune);
-	cout << setw(4) << "3) Retour au menu " << endl;
-	Couleur (KReset);
-	cout << "Que voulez-vous faire ?\n Saisie : ";
 
-	char ChoixJeu; 
-	string Buffer;
-	getline (cin, Buffer);
-	ChoixJeu = Buffer [0];
-
-	if (ChoixJeu == '3' )
-		ClearScreen();
-	if (ChoixJeu == '2')
-	{
-		ClearScreen ();
-		//JeuArcade ();		
-	}
-	if (ChoixJeu == '1')
-	{
-		ClearScreen();
-		JeuNormal ();
-    } 
-}// Menu dans Jeu
 
 void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoueur2, char & ChoixParam)
    {
@@ -515,7 +487,7 @@ void Parametres (char & Jeton1, char & Jeton2, string & NJoueur1, string & NJoue
 			if (Choix =='1')
 			{
 				ClearScreen ();
-				ParametreJeu ();// sélection dans menu principal
+				JeuNormal ();// sélection dans menu principal
 
 			}
 
