@@ -2,11 +2,13 @@
  *
  * @file   Puissance_4.cxx
  *
- * @author SCOUR Kilian Antoine MERINO Thomas BIANCHINI	
+ * @authors Kilian SCOUR Antoine MERINO Thomas BIANCHINI Julie MIENVILLE
  *
- * @date   18/12/2012
+ * @date   21/12/2012
  *
- * @brief  Puissance 4
+ * @brief  Projet puissance 4 en C++ sur console Linux
+ * 
+ * Veuillez lire le fichier README.txt
  *
 **/
 
@@ -74,35 +76,35 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
         }
     } // SaisieJeton ()
     
-      void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
+    void SaisirNJoueur (string & NJoueur1, string & NJoueur2)
     {
-    		Couleur (KRouge);
-            cout << "Nom du joueur 1 : ";
+		Couleur (KRouge);
+        cout << "Nom du joueur 1 : ";
+        Couleur (KReset);
+        getline(cin, NJoueur1);
+        for (;;)
+        {
+        	Couleur (KBleu);
+            cout << "Nom du joueur 2 : ";
             Couleur (KReset);
-            getline(cin, NJoueur1);
-            for (;;)
-            {
-            	Couleur (KBleu);
-                cout << "Nom du joueur 2 : ";
-                Couleur (KReset);
-                getline(cin, NJoueur2);
-                
-                if (NJoueur2 != NJoueur1) break;
-                cerr << "Choisissez un pseudo différent de " << NJoueur1 << "!" << endl;
-            }
-            cout << "Le joueur 1 est : " << NJoueur1 << " ";
-            if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
-            {
-            	cout << "Correcteur Spotted" << endl;
-			}
-            cout << endl << "Le joueur 2 est : " << NJoueur2 << " ";
-            if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
-            {
-            		cout << "Correcteur Spotted" << endl;
-            }
-            cout << endl << "Appuyer sur entrée pour retourner dans le menu...";
-            cin.get();
+            getline(cin, NJoueur2);
             
+            if (NJoueur2 != NJoueur1) break;
+            cerr << "Choisissez un pseudo différent de " << NJoueur1 << "!" << endl;
+        }
+        cout << "Le joueur 1 est : " << NJoueur1 << " ";
+        if (NJoueur1 == Cheat1 || NJoueur1 == Cheat2)
+        {
+        	cout << "Correcteur Spotted" << endl;
+		}
+        cout << endl << "Le joueur 2 est : " << NJoueur2 << " ";
+        if (NJoueur2 == Cheat1 || NJoueur2 == Cheat2)
+        {
+        		cout << "Correcteur Spotted" << endl;
+        }
+        cout << endl << "Appuyer sur entrée pour retourner dans le menu...";
+        cin.get();
+        
     }// SaisirNJoueur   
     
        /***********************************************************************    
@@ -111,7 +113,7 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 
 	void ClearScreen ()
 	{
-    cout << "\033[H\033[2J";
+        cout << "\033[H\033[2J";
     } // ClearScreen ()
     
     void AfficheLigne (const CVLigne & Li)
@@ -217,10 +219,9 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
     {
         char Pion = (CoupDuJoueur1 ? Jeton1 : Jeton2);
         const unsigned KNbPoss (NumCol < Mat.size () /2  ?  NumCol + 1 : Mat.size () - NumCol);
+        /* Diagonale Sud-Ouest Nord-Est*/
         const int KPosDebCol1 = max (0, int(NumLi > Mat.size() / 2 ? NumCol - (Mat.size() - 1 - NumLi) : NumCol - Mat.size() / 2));
         const int KPosDebLi1 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
-        const int KPosDebCol2 = min (6, int(NumLi > Mat.size() / 2 ? NumCol + (Mat.size() - 1 - NumLi) : NumCol + Mat.size() / 2));
-        const int KPosDebLi2 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
 
         for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 		{
@@ -233,7 +234,10 @@ string Cheat1 ("Casali"), Cheat2 ("Laporte");
 
 			if (4 == NbCorrespondances) return true;
 		}
-
+        /* Diagonale Nord-Ouest Sud-Est */
+        const int KPosDebCol2 = min (6, int(NumLi > Mat.size() / 2 ? NumCol + (Mat.size() - 1 - NumLi) : NumCol + Mat.size() / 2));
+        const int KPosDebLi2 = min (6, int(NumLi > Mat.size() / 2 ? NumLi + (Mat.size() - 1 - NumLi) : NumLi + Mat.size() / 2));
+        
 	    for (unsigned NbInspections (0);  NbInspections < KNbPoss; ++NbInspections)
 	    {
 		    unsigned NbCorrespondances = 0;
